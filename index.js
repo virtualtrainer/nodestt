@@ -6,16 +6,15 @@ const Duplex = require('stream').Duplex;
 const Wav = require('node-wav');
 const express = require('express');
 const app = express();
-const port = 8000;
+const port = 8080;
 app.listen(port,()=> {
-console.log('listen port 8000');
-})
+//console.log('listen port 8040');
+});
 
 app.get('/hello_world', (req,res)=>{
-res.send('Hello World');
-})
+	
 
-let modelPath = './models/deepspeech-0.9.3-models.pbmm';
+	let modelPath = './models/deepspeech-0.9.3-models.pbmm';
 
 let model = new DeepSpeech.Model(modelPath);
 
@@ -25,7 +24,7 @@ let scorerPath = './models/deepspeech-0.9.3-models.scorer';
 
 model.enableExternalScorer(scorerPath);
 
-let audioFile = process.argv[2] || './audio/2830-3980-0043.wav';
+let audioFile = process.argv[2] || 'https://www.wavsource.com/snds_2020-10-01_3728627494378403/movie_stars/cagney/say_your_prayers.wav';
 
 if (!Fs.existsSync(audioFile)) {
 	console.log('file missing:', audioFile);
@@ -68,9 +67,15 @@ audioStream.on('finish', () => {
 	let audioBuffer = audioStream.toBuffer();
 	
 	const audioLength = (audioBuffer.length / 2) * (1 / desiredSampleRate);
-	console.log('audio length', audioLength);
+	//console.log('audio length', audioLength);
 	
 	let result = model.stt(audioBuffer);
 	
-	console.log('result:', result);
+	//console.log('result:', result);
+	res.send(result);
 });
+
+	
+
+});
+
