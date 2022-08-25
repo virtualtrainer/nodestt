@@ -1,15 +1,42 @@
 const DeepSpeech = require('deepspeech');
-const Fs = require('fs');
+const path = require('path');
+const multer = require('multer');
+const fs = require('fs');
 const Sox = require('sox-stream');
 const MemoryStream = require('memory-stream');
 const Duplex = require('stream').Duplex;
 const Wav = require('node-wav');
 const express = require('express');
+const storage = multer.diskStorage({
+	destination(req, file, cb) {
+	  cb(null, 'audio/');
+	},
+	filename(req, file, cb) {
+	  const fileNameArr = file.originalname.split('.');
+	  cb(null, `${Date.now()}.${fileNameArr[fileNameArr.length - 1]}`);
+	},
+  });
+  const upload = multer({ storage });
+  
 const app = express();
+//app.use(express.static('public/assets'));
+app.use(express.static('audio'));
 const port = 8080;
 app.listen(port,()=> {
 //console.log('listen port 8040');
 });
+
+app.post('/record', upload.single('audio'), (req, res) => res.json({ success: true }));
+
+app.get('/recordings', (req, res) => {
+	let files = fs.readdirSync(path.join(__dirname, 'audio'));
+	files = files.filter((file) => {
+	  // check that the files are audio files
+	  const fileNameArr = file.split('.');
+	  return fileNameArr[fileNameArr.length - 1] === 'wav';
+	}).map((file) => `/${file}`);
+	return res.json({ success: true, files });
+  });
 
 app.get('/hello_world', (req,res)=>{
 	
@@ -24,7 +51,7 @@ let scorerPath = './models/deepspeech-0.9.3-models.scorer';
 
 model.enableExternalScorer(scorerPath);
 
-let audioFile = process.argv[2] || 'https://www.wavsource.com/snds_2020-10-01_3728627494378403/movie_stars/cagney/say_your_prayers.wav';
+let audioFile = process.argv[2] || './audio/2830-3980-0043.wav';
 
 if (!Fs.existsSync(audioFile)) {
 	console.log('file missing:', audioFile);
