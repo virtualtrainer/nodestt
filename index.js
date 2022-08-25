@@ -11,6 +11,10 @@ app.listen(port,()=> {
 console.log('listen port 8000');
 })
 
+app.get('/hello_world', (req,res)=>{
+res.send('Hello World');
+})
+
 let modelPath = './models/deepspeech-0.9.3-models.pbmm';
 
 let model = new DeepSpeech.Model(modelPath);
