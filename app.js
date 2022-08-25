@@ -4,12 +4,6 @@ const Sox = require('sox-stream');
 const MemoryStream = require('memory-stream');
 const Duplex = require('stream').Duplex;
 const Wav = require('node-wav');
-const express = require('express');
-const app = express();
-const port = 8000;
-app.listen(port,()=> {
-console.log('listen port 8000');
-})
 
 let modelPath = './models/deepspeech-0.9.3-models.pbmm';
 
