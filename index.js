@@ -22,7 +22,7 @@ const app = express();
 //app.use(express.static('public/assets'));
 app.use(express.static('audio'));
 const port = 8080;
-app.listen(port,()=> {
+app.listen(process.env.PORT || port,()=> {
 //console.log('listen port 8040');
 });
 
