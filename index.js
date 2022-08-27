@@ -51,7 +51,7 @@ let scorerPath = './models/deepspeech-0.9.3-models.scorer';
 
 model.enableExternalScorer(scorerPath);
 
-let audioFile = process.argv[2] || './audio/2830-3980-0043.wav';
+let audioFile = process.argv[2] || './audio/dude3.wav';
 
 if (!Fs.existsSync(audioFile)) {
 	console.log('file missing:', audioFile);
