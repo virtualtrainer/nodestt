@@ -53,12 +53,12 @@ model.enableExternalScorer(scorerPath);
 
 let audioFile = process.argv[2] || './audio/dude3.wav';
 
-if (!Fs.existsSync(audioFile)) {
+if (!fs.existsSync(audioFile)) {
 	console.log('file missing:', audioFile);
 	process.exit();
 }
 
-const buffer = Fs.readFileSync(audioFile);
+const buffer = fs.readFileSync(audioFile);
 const result = Wav.decode(buffer);
 
 if (result.sampleRate < desiredSampleRate) {
